@@ -759,13 +759,14 @@ img {
   aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
+  margin: 0 auto;
 }
 
 /* Ambient Aura */
 .avatar-ambient-aura {
   position: absolute;
-  width: 280px;
-  height: 280px;
+  width: clamp(200px, 65vw, 290px);
+  height: clamp(200px, 65vw, 290px);
   border-radius: 50%;
   background: radial-gradient(circle, var(--border-glow) 0%, transparent 70%);
   filter: blur(35px);
@@ -782,8 +783,8 @@ img {
 /* Orbit Ring 1: Neon Cyan/Blue - ROTATING CLOCKWISE */
 .orbit-ring-1 {
   position: absolute;
-  width: 340px;
-  height: 340px;
+  width: clamp(230px, 72vw, 340px);
+  height: clamp(230px, 72vw, 340px);
   border-radius: 50%;
   border: 2px dashed rgba(0, 242, 254, 0.65);
   box-shadow: 0 0 25px rgba(0, 242, 254, 0.35), inset 0 0 20px rgba(0, 242, 254, 0.15);
@@ -795,8 +796,8 @@ img {
 /* Orbit Ring 2: Neon Magenta/Purple/Amber - ROTATING COUNTER-CLOCKWISE */
 .orbit-ring-2 {
   position: absolute;
-  width: 390px;
-  height: 390px;
+  width: clamp(270px, 84vw, 395px);
+  height: clamp(270px, 84vw, 395px);
   border-radius: 50%;
   border: 2.5px solid transparent;
   background: linear-gradient(var(--bg-base), var(--bg-base)) padding-box, var(--ring-2-grad) border-box;
@@ -882,8 +883,8 @@ img {
 /* Circular Avatar Center */
 .circular-avatar-wrapper {
   position: relative;
-  width: 250px;
-  height: 250px;
+  width: clamp(165px, 52vw, 250px);
+  height: clamp(165px, 52vw, 250px);
   border-radius: 50%;
   overflow: hidden;
   border: 4px solid var(--bg-surface);
@@ -2813,9 +2814,21 @@ img {
 }
 
 /* ==========================================================================
-   RESPONSIVE BREAKPOINTS
+   RESPONSIVE BREAKPOINTS & DEVICE PERFECTION
    ========================================================================== */
 
+/* Disable custom cursor on touch devices */
+@media (hover: none) or (pointer: coarse) {
+  #cyber-cursor,
+  #cyber-cursor-ring {
+    display: none !important;
+  }
+  body, a, button, input, textarea {
+    cursor: auto !important;
+  }
+}
+
+/* Tablets & Small Laptops (<= 1024px) */
 @media (max-width: 1024px) {
   .hero-grid {
     grid-template-columns: 1fr;
@@ -2855,7 +2868,12 @@ img {
   }
 }
 
+/* Tablets & Large Phones (<= 768px) */
 @media (max-width: 768px) {
+  .container {
+    width: min(100% - 32px, 720px);
+  }
+
   .nav-status-badge {
     display: none;
   }
@@ -2865,22 +2883,32 @@ img {
   }
 
   .nav-links {
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 72px;
     left: 0;
     width: 100%;
+    height: calc(100vh - 72px);
     background: rgba(6, 10, 20, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-subtle);
-    padding: 20px;
+    padding: 24px 20px;
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
+    gap: 10px;
     display: none;
-    box-shadow: var(--shadow-lg);
+    overflow-y: auto;
+    z-index: 99;
   }
 
   .nav-links.mobile-open {
     display: flex;
+  }
+
+  .nav-link {
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    border-radius: 12px;
   }
 
   .projects-grid,
@@ -2893,39 +2921,101 @@ img {
     display: none;
   }
 
-  .orbit-ring-1 {
-    width: 290px;
-    height: 290px;
-  }
-
-  .orbit-ring-2 {
-    width: 330px;
-    height: 330px;
-  }
-
-  .circular-avatar-wrapper {
-    width: 210px;
-    height: 210px;
-  }
-
   .ai-chat-drawer {
-    width: calc(100vw - 32px);
-    right: -70px;
+    position: fixed;
+    bottom: 85px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-width: 420px;
+    height: min(480px, 75vh);
+    margin: 0 auto;
+    border-radius: 20px;
+  }
+
+  .terminal-tabs {
+    -webkit-overflow-scrolling: touch;
   }
 }
 
+/* Mobile Phones (<= 480px) */
 @media (max-width: 480px) {
   .container {
     width: calc(100% - 24px);
   }
 
+  .site-header {
+    min-height: 64px;
+  }
+
+  .nav-container {
+    min-height: 64px;
+  }
+
+  .brand-logo {
+    font-size: 1.18rem;
+    gap: 0.45rem;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .nav-cta-btn {
+    display: none;
+  }
+
+  .control-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
+  }
+
+  .hero-section {
+    padding: 30px 0 20px;
+  }
+
+  .hero-heading {
+    font-size: clamp(2rem, 9vw, 2.7rem);
+  }
+
+  .typing-container {
+    font-size: 1.1rem;
+    min-height: 2rem;
+  }
+
+  .hero-bio {
+    font-size: 0.94rem;
+    line-height: 1.65;
+  }
+
+  .hero-robot-banner {
+    padding: 12px 14px;
+    gap: 12px;
+    margin-bottom: 1.4rem;
+  }
+
+  .robot-svg {
+    width: 52px;
+    height: 52px;
+  }
+
+  .robot-speech-bubble p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
   .hero-actions {
     flex-direction: column;
     width: 100%;
+    gap: 0.75rem;
   }
 
   .hero-actions .btn {
     width: 100%;
+    min-height: 46px;
   }
 
   .orbit-stats-bar {
@@ -2933,11 +3023,134 @@ img {
     bottom: auto;
     left: auto;
     transform: none;
-    margin-top: 25px;
+    width: 100%;
+    max-width: 340px;
+    margin-top: 24px;
+    padding: 10px 14px;
+  }
+
+  .stat-digit {
+    font-size: 1.25rem;
+  }
+
+  .stat-sub {
+    font-size: 0.7rem;
+  }
+
+  .section-container {
+    padding: 50px 0;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.92rem;
+  }
+
+  .filter-tabs-container {
+    gap: 6px;
+    margin-bottom: 22px;
+  }
+
+  .filter-tab,
+  .project-filter-tab {
+    padding: 0.45rem 0.95rem;
+    font-size: 0.78rem;
+  }
+
+  .skill-card {
+    padding: 14px;
+  }
+
+  .project-card {
+    border-radius: 20px;
+  }
+
+  .project-card-content {
+    padding: 18px 16px;
+  }
+
+  .project-card-footer {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .project-action-btn {
+    min-height: 42px;
+  }
+
+  .timeline-card {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .education-card {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .objective-glass-card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+
+  .objective-icon-orb {
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
+  }
+
+  .objective-title {
+    font-size: 1.25rem;
+  }
+
+  .form-glass-card {
+    padding: 22px 16px;
+    border-radius: 20px;
+  }
+
+  .contact-card-modern {
+    padding: 14px 16px;
+    border-radius: 14px;
   }
 
   .ai-robot-floating-container {
-    right: 20px;
-    bottom: 90px;
+    right: 14px;
+    bottom: 74px;
+  }
+
+  .ai-robot-launcher-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+
+  .back-to-top-btn {
+    right: 14px;
+    bottom: 18px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Extra Small Phones (<= 360px) */
+@media (max-width: 360px) {
+  .hero-heading {
+    font-size: 1.85rem;
+  }
+
+  .hero-social-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modal-window {
+    border-radius: 16px;
+  }
+
+  .modal-body {
+    padding: 16px;
   }
 }
